@@ -8,7 +8,7 @@ import java.util.Collections
 
 data class UserAuthentication(
     private val identityUser: IdentityUser
-) : Authentication, Serializable {
+) : Authentication {
 
     @Serial
     private val serialVersionUID = -1L
@@ -38,6 +38,7 @@ data class UserAuthentication(
     override fun isAuthenticated(): Boolean {
         return authenticated
     }
+
 
     override fun setAuthenticated(isAuthenticated: Boolean) {
         authenticated = isAuthenticated

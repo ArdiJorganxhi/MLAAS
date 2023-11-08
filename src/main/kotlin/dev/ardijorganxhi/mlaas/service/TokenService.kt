@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.CompressionCodecs
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -41,10 +42,18 @@ class TokenService(private val jwtConfiguration: JwtConfiguration, private val j
 
     private fun getTokenFromHeader(httpServletRequest: HttpServletRequest): String {
         val authenticationHeader = httpServletRequest.getHeader("Authorization")
-        val startWithBearer = StringUtils.startsWith(authenticationHeader, "Bearer")
+        val startWithBearer = StringUtils.startsWith(authenticationHeader,"Bearer")
         val headerParams = StringUtils.split(authenticationHeader, StringUtils.SPACE)
-        val headerParamSizeIsTwo = headerParams.size == 2
+        val headerParamSizeIsTwo = ArrayUtils.getLength(headerParams) == 2
         val isAuthenticationHeaderValid = authenticationHeader != null && startWithBearer && headerParamSizeIsTwo
-        return authenticationHeader.split(StringUtils.SPACE)[1]
+
+        if (!isAuthenticationHeaderValid) {
+            println("Not valid!")
+        }
+
+        return authenticationHeader!!.split(StringUtils.SPACE)[1]
     }
+
+
+
 }

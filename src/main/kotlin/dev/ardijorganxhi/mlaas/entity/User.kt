@@ -23,7 +23,10 @@ data class User(
     var email: String,
 
     @Column(name = "password", nullable = false)
-    var pass: String
+    var pass: String,
+
+    @Column(name = "is_deleted", nullable = false)
+    var isDeleted: Boolean = false
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return Collections.emptyList()
@@ -31,11 +34,11 @@ data class User(
 
 
     override fun getPassword(): String {
-        return this.pass
+        return pass
     }
 
     override fun getUsername(): String {
-        return this.email
+        return email
     }
 
     override fun isAccountNonExpired(): Boolean {

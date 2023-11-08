@@ -46,7 +46,7 @@ class AuthService(
         } catch (e: BadCredentialsException) {
             throw Exception("BadCredentialsException")
         }
-        var user = userRepository.findByEmail(request.email) as User
+        val user = userRepository.findByEmail(request.email) as User
         return tokenService.createToken(userMapper.convertToDto(user))
     }
 

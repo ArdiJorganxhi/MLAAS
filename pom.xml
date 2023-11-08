@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<kotlin.version>1.6.21</kotlin.version>
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<json-web-token.version>0.9.0</json-web-token.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,18 +54,8 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
+			<artifactId>jjwt</artifactId>
+			<version>${json-web-token.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

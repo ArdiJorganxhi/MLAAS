@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 @Component
 class UserMapper {
 
-
     fun convertToDto(user: User) : UserDto {
         return UserDto(
             id = user.id,
