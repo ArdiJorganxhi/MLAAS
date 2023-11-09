@@ -10,9 +10,9 @@ class UserMapper {
     fun convertToDto(user: User) : UserDto {
         return UserDto(
             id = user.id,
-            name = user.name,
-            surname = user.surname,
-            email = user.email
+            name = user.name!!,
+            surname = user.surname!!,
+            email = user.email!!
         )
     }
 }
