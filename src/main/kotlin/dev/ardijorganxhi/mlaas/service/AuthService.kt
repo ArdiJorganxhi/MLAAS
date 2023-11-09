@@ -1,10 +1,12 @@
 package dev.ardijorganxhi.mlaas.service
 
 import dev.ardijorganxhi.mlaas.entity.User
+import dev.ardijorganxhi.mlaas.exception.ApiException
 import dev.ardijorganxhi.mlaas.mapper.AuthMapper
 import dev.ardijorganxhi.mlaas.mapper.IdentityUserMapper
 import dev.ardijorganxhi.mlaas.mapper.UserMapper
 import dev.ardijorganxhi.mlaas.model.UserAuthentication
+import dev.ardijorganxhi.mlaas.model.error.ErrorEnum
 import dev.ardijorganxhi.mlaas.model.request.LoginRequest
 import dev.ardijorganxhi.mlaas.model.request.RegisterRequest
 import dev.ardijorganxhi.mlaas.repository.UserRepository
@@ -46,8 +48,13 @@ class AuthService(
         } catch (e: BadCredentialsException) {
             throw Exception("BadCredentialsException")
         }
-        val user = userRepository.findByEmail(request.email) as User
-        return tokenService.createToken(userMapper.convertToDto(user))
+        val user = userRepository.findByEmail(request.email)
+        if(user != null) {
+            return tokenService.createToken(userMapper.convertToDto(user))
+        } else {
+            throw ApiException(ErrorEnum.UNAUTHORIZED)
+        }
+
     }
 
     fun getUserAuthentication(httpServletRequest: HttpServletRequest): Authentication {

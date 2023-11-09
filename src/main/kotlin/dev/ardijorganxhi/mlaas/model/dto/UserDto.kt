@@ -1,8 +1,8 @@
 package dev.ardijorganxhi.mlaas.model.dto
 
 data class UserDto(
-    val id: Int,
-    val name: String,
-    val surname: String,
-    val email: String
+    var id: Int,
+    var name: String,
+    var surname: String,
+    var email: String
 )

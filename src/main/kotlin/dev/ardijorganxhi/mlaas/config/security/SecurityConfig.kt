@@ -1,4 +1,4 @@
-package dev.ardijorganxhi.mlaas.config
+package dev.ardijorganxhi.mlaas.config.security
 
 import dev.ardijorganxhi.mlaas.filter.JwtAuthenticationFilter
 import dev.ardijorganxhi.mlaas.service.AuthService

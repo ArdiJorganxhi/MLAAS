@@ -7,23 +7,23 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-data class User(
+class User private constructor(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int = 0,
+    var id: Int = -1,
 
     @Column(name = "name", nullable = false)
-    var name: String,
+    var name: String?,
 
     @Column(name = "surname", nullable = false)
-    var surname: String,
+    var surname: String?,
 
     @Column(name = "email", nullable = false)
-    var email: String,
+    var email: String?,
 
     @Column(name = "password", nullable = false)
-    var pass: String,
+    var pass: String?,
 
     @Column(name = "is_deleted", nullable = false)
     var isDeleted: Boolean = false
@@ -33,11 +33,11 @@ data class User(
     }
 
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return pass
     }
 
-    override fun getUsername(): String {
+    override fun getUsername(): String? {
         return email
     }
 
@@ -56,4 +56,21 @@ data class User(
     override fun isEnabled(): Boolean {
         return true
     }
+
+    data class Builder(
+        var id: Int = -1,
+        var name: String? = null,
+        var surname: String? = null,
+        var email: String? = null,
+        var pass: String? = null
+    ) {
+        fun id(id: Int) = apply { this.id = id }
+        fun name(name: String) = apply { this.name = name }
+        fun surname(surname: String) = apply { this.surname = surname }
+        fun email(email: String) = apply { this.email = email }
+        fun pass(pass: String) = apply { this.pass = pass }
+        fun build() = User(id, name, surname, email, pass)
+    }
+
 }
+

@@ -1,4 +1,4 @@
-package dev.ardijorganxhi.mlaas.config
+package dev.ardijorganxhi.mlaas.config.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder

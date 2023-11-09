@@ -1,7 +1,11 @@
 package dev.ardijorganxhi.mlaas.service
 
-import dev.ardijorganxhi.mlaas.config.JwtConfiguration
+import dev.ardijorganxhi.mlaas.config.security.JwtConfiguration
+import dev.ardijorganxhi.mlaas.exception.AuthException
 import dev.ardijorganxhi.mlaas.model.dto.UserDto
+import dev.ardijorganxhi.mlaas.model.error.ErrorDetail
+import dev.ardijorganxhi.mlaas.model.error.ErrorEnum
+import dev.ardijorganxhi.mlaas.model.error.ErrorResponse
 import dev.ardijorganxhi.mlaas.utils.DateUtils
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.CompressionCodecs
@@ -48,7 +52,9 @@ class TokenService(private val jwtConfiguration: JwtConfiguration, private val j
         val isAuthenticationHeaderValid = authenticationHeader != null && startWithBearer && headerParamSizeIsTwo
 
         if (!isAuthenticationHeaderValid) {
-            println("Not valid!")
+            val errorDetail = ErrorDetail(ErrorEnum.UNAUTHORIZED.code, "Authentication header not valid.")
+            val errors: List<ErrorDetail> = listOf(errorDetail)
+            throw AuthException(ErrorResponse.Builder().errors(errors).build())
         }
 
         return authenticationHeader!!.split(StringUtils.SPACE)[1]

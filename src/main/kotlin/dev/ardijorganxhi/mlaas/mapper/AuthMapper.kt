@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component
 class AuthMapper {
 
     fun register(registerRequest: RegisterRequest): User {
-        return User(
-            name = registerRequest.name,
-            surname = registerRequest.surname,
-            email = registerRequest.email,
-            pass = registerRequest.password
-        )
+        return User.Builder()
+            .name(registerRequest.name)
+            .surname(registerRequest.surname)
+            .email(registerRequest.email)
+            .pass(registerRequest.password)
+            .build()
     }
 }
 

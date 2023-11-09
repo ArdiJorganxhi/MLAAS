@@ -1,4 +1,4 @@
-package dev.ardijorganxhi.mlaas.config
+package dev.ardijorganxhi.mlaas.config.security
 
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value

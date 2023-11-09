@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 import kotlin.math.log
 
 @RestController
@@ -15,13 +16,13 @@ import kotlin.math.log
 class AuthController(private val authService: AuthService) {
 
     @PostMapping("/register")
-    fun register(@RequestBody registerRequest: RegisterRequest): ResponseEntity<String> {
+    fun register(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<String> {
         authService.register(registerRequest)
         return ResponseEntity.ok("User is registered!")
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<String> {
+    fun login(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<String> {
         return ResponseEntity.ok(authService.login(request = loginRequest))
     }
 }
