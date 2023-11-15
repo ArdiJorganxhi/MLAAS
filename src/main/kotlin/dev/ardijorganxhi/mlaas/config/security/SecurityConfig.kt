@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SecurityConfiguration(@Lazy private val authService: AuthService, private val userService: UserService) {
 
     @Bean
@@ -31,18 +30,19 @@ class SecurityConfiguration(@Lazy private val authService: AuthService, private 
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.cors()
-            .and()
-            .csrf().disable()
-            .headers()
-            .frameOptions().disable()
+        http.cors().and()
+            .csrf()
+            .disable()
+            .authorizeHttpRequests()
+            .anyRequest()
+            .authenticated()
             .and()
             .authenticationManager(authenticationManagerBean(http))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterBefore(JwtAuthenticationFilter(authService), UsernamePasswordAuthenticationFilter::class.java)
-            .authorizeRequests().anyRequest().authenticated()
+
 
         return http.build()
     }
@@ -50,9 +50,8 @@ class SecurityConfiguration(@Lazy private val authService: AuthService, private 
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web: WebSecurity ->
-            web.debug(false)
-                .ignoring()
-                .antMatchers(*getWhiteList())
+            web.ignoring().antMatchers(*getWhiteList())
+
         }
     }
 
