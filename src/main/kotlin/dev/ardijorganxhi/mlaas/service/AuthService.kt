@@ -2,9 +2,7 @@ package dev.ardijorganxhi.mlaas.service
 
 import dev.ardijorganxhi.mlaas.entity.User
 import dev.ardijorganxhi.mlaas.exception.ApiException
-import dev.ardijorganxhi.mlaas.mapper.AuthMapper
-import dev.ardijorganxhi.mlaas.mapper.IdentityUserMapper
-import dev.ardijorganxhi.mlaas.mapper.UserMapper
+import dev.ardijorganxhi.mlaas.mapper.*
 import dev.ardijorganxhi.mlaas.model.UserAuthentication
 import dev.ardijorganxhi.mlaas.model.error.ErrorEnum
 import dev.ardijorganxhi.mlaas.model.request.LoginRequest
@@ -25,17 +23,19 @@ import javax.transaction.Transactional
 @Service
 class AuthService(
     private val userRepository: UserRepository,
-    private val authMapper: AuthMapper,
     private val tokenService: TokenService,
-    private val identityUserMapper: IdentityUserMapper,
     private val authenticationManager: AuthenticationManager,
-    private val userMapper: UserMapper,
     private val passwordEncoder: BCryptPasswordEncoder) {
 
     @Transactional
     fun register(registerRequest: RegisterRequest) {
-        registerRequest.password = passwordEncoder.encode(registerRequest.password)
-        val user = authMapper.register(registerRequest)
+        val user = User.Builder()
+                .name(registerRequest.name)
+                .surname(registerRequest.surname)
+                .email(registerRequest.email)
+                .pass(passwordEncoder.encode(registerRequest.password))
+                .build()
+
         userRepository.save(user)
     }
 
@@ -49,8 +49,8 @@ class AuthService(
             throw Exception("BadCredentialsException")
         }
         val user = userRepository.findByEmail(request.email)
-        if(user != null) {
-            return tokenService.createToken(userMapper.convertToDto(user))
+        return if(user != null) {
+            tokenService.createToken(user.convertToDto())
         } else {
             throw ApiException(ErrorEnum.UNAUTHORIZED)
         }
@@ -59,7 +59,7 @@ class AuthService(
 
     fun getUserAuthentication(httpServletRequest: HttpServletRequest): Authentication {
         val claims: Claims = tokenService.getTokenClaims(httpServletRequest)
-        return UserAuthentication(identityUserMapper.getUser(claims))
+        return UserAuthentication(claims.getUser())
     }
 
 }
