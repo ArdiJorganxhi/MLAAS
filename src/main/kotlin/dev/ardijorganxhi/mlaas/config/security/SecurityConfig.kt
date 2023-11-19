@@ -65,7 +65,8 @@ class SecurityConfiguration(@Lazy private val authService: AuthService, private 
             "/favicon.ico",
             "/csrf",
             "/",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/api/models/**"
         )
     }
 }
